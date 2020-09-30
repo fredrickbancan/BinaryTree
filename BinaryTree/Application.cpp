@@ -12,7 +12,7 @@ int main(int argc, char* argv[])
     int screenWidth = 800;
     int screenHeight = 450;
 
-    InitWindow(screenWidth, screenHeight, "raylib [core] example - basic window");
+    InitWindow(screenWidth, screenHeight, "Fredrick Binary Tree - ints");
 
     //--------------------------------------------------------------------------------------
 
