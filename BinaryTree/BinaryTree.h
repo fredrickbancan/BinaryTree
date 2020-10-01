@@ -29,9 +29,13 @@ private:
 
 	/*recursively searches for a node which contains the provided value.
 	  if found, removes that node safely and returns true. else returns false.*/
-	bool searchAndDeleteLeafRecursive(Node* parentLeaf, int value);
+	bool searchAndDeleteLeafRecursive(Node* root, int value);
 
-	void deleteLeaf(Node* )
+	/*deletes the provided leaf node and re-constructs its children branches.*/
+	void deleteLeaf(Node* leaf);
+
+	/*returns the deepest left side (smallest) node under the provided root*/
+	Node* getDeepestSmallestNodeRecursive(Node* root);
 public:
 	/*initializes*/
 	BinaryTree(bool startWithRoot = false, int rootValue = 0);

@@ -20,9 +20,40 @@ bool BinaryTree::searchForValueRecursive(Node* root, int value) const
 	return false;
 }
 
-bool BinaryTree::searchAndDeleteLeafRecursive(Node* parentLeaf, int value)
+bool BinaryTree::searchAndDeleteLeafRecursive(Node* root, int value)
 {
+	if (root->data == value)
+	{
+		deleteLeaf(root);
+		return true;
+	}
+
+	if (value > root->data && root->rightChild != nullptr)
+	{
+
+		return searchForValueRecursive(root->rightChild, value);
+
+	}
+	else if (root->leftChild != nullptr)
+	{
+		return searchForValueRecursive(root->leftChild, value);
+	}
 	return false;
+}
+
+void BinaryTree::deleteLeaf(Node* leaf)
+{
+	//TODO: impliment
+
+}
+
+Node* BinaryTree::getDeepestSmallestNodeRecursive(Node* root)
+{
+	if (root->leftChild == nullptr)
+	{
+		return root;
+	}
+	return getDeepestSmallestNodeRecursive(root->leftChild);
 }
 
 BinaryTree::BinaryTree(bool startWithRoot /*= false*/, int rootValue/*= 0*/)
@@ -31,6 +62,7 @@ BinaryTree::BinaryTree(bool startWithRoot /*= false*/, int rootValue/*= 0*/)
 	{
 		root = new Node{nullptr, nullptr, nullptr, rootValue};
 		count++;
+		isEmpty = false;
 	}
 }
 
@@ -118,7 +150,6 @@ bool BinaryTree::remove(int value)
 {
 	if (isEmpty)
 		return false;
-
 
 	return searchAndDeleteLeafRecursive(root, value);
 }
