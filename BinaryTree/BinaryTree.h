@@ -36,6 +36,10 @@ private:
 
 	/*returns the deepest left side (smallest) node under the provided root*/
 	Node* getDeepestSmallestNodeRecursive(Node* root);
+
+	/*returns the deepest right side (largest) node under the provided root*/
+	Node* getDeepestLargestNodeRecursive(Node* root);
+
 public:
 	/*initializes*/
 	BinaryTree(bool startWithRoot = false, int rootValue = 0);
@@ -51,4 +55,13 @@ public:
 	/*returns true if node with value was found and removed, 
 	  else returns false.*/
 	bool remove(int value);
+
+	/*returns total count of nodes in tree*/
+	int getCount();
+
+	/*returns true if tree is empty*/
+	bool getIsEmpty();
+
+	/*returns the root of this tree*/
+	Node* getRoot();
 };
