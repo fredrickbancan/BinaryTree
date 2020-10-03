@@ -64,4 +64,7 @@ public:
 
 	/*returns the root of this tree*/
 	Node* getRoot();
+
+	/*prints all node data to console*/
+	void print();
 };

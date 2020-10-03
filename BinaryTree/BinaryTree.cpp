@@ -1,5 +1,5 @@
 #include "BinaryTree.h"
-
+#include <iostream>
 bool BinaryTree::searchForValueRecursive(Node* root, int value) const
 {
 	if (root->data == value)
@@ -79,18 +79,14 @@ void BinaryTree::deleteLeaf(Node* leaf)
 	if(leaf->leftChild == nullptr)//if the leaf only has a right child
 	{
 		nodeToSwap = getDeepestSmallestNodeRecursive(leaf->rightChild);
-		nodeToSwap->rightChild = leaf->rightChild;
 	}
 	else if(leaf->rightChild == nullptr)//if the leaf only has a left child
 	{
 		nodeToSwap = getDeepestLargestNodeRecursive(leaf->leftChild);
-		nodeToSwap->leftChild = leaf->leftChild;
 	}
 	else//if the leaf has both children
 	{
 		nodeToSwap = getDeepestSmallestNodeRecursive(leaf->rightChild);
-		nodeToSwap->rightChild = leaf->rightChild;
-		nodeToSwap->leftChild = leaf->leftChild;
 	}
 
 	//disconnect replacement node from its parent
@@ -106,23 +102,12 @@ void BinaryTree::deleteLeaf(Node* leaf)
 			nodeToSwap->parent->rightChild = nullptr;
 		}
 	}
-	
-	//attach replacement node to leaf parent
-	if (leaf->parent != nullptr)
-	{
-		if (leaf->parent->leftChild == leaf)
-		{
-			leaf->parent->leftChild = nodeToSwap;
-		}
-		else
-		{
-			leaf->parent->rightChild = nodeToSwap;
-		}
-		nodeToSwap->parent = leaf->parent;
-	}
-	
-	//finally delete leaf
-	delete leaf;
+
+	//copy over data to replace node
+	leaf->data = nodeToSwap->data;
+
+	//finally delete replacement
+	delete nodeToSwap;
 	count--;
 	if (count < 1)
 	{
@@ -252,7 +237,7 @@ bool BinaryTree::remove(int value)
 
 int BinaryTree::getCount()
 {
-	count;
+	return count;
 }
 
 bool BinaryTree::getIsEmpty()
@@ -263,4 +248,19 @@ bool BinaryTree::getIsEmpty()
 Node* BinaryTree::getRoot()
 {
 	return root;
+}
+
+void printNode(Node* node)
+{
+	if (node != nullptr)
+	{
+		printNode(node->leftChild);
+		std::cout << node->data << std::endl;
+		printNode(node->rightChild);
+	}
+}
+void BinaryTree::print()
+{
+	if(!isEmpty)
+	printNode(root);
 }
