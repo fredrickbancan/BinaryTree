@@ -67,4 +67,20 @@ public:
 
 	/*prints all node data to console*/
 	void print();
+
 };
+/*returns the number of child layers under the provided node.
+  useful for rendering nodes.*/
+int getChildCountRecursive(Node* node);
+
+/*returns true if provided node has child*/
+bool hasChild(Node* node);
+
+/*returns true if the provided node is a right child of its parent*/
+bool isRightChild(Node* node);
+
+/*returns the count of left hand childen under the node*/
+int getLeftChildCount(Node* node);
+
+/*returns the count of right hand children under the node*/
+int getRightChildCount(Node* node);

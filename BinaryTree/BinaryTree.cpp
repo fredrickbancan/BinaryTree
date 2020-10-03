@@ -1,5 +1,5 @@
-#include "BinaryTree.h"
 #include <iostream>
+#include "BinaryTree.h"
 bool BinaryTree::searchForValueRecursive(Node* root, int value) const
 {
 	if (root->data == value)
@@ -263,4 +263,69 @@ void BinaryTree::print()
 {
 	if(!isEmpty)
 	printNode(root);
+}
+
+int getChildCountRecursive(Node* node)
+{
+	if (node == nullptr) return 0;
+	int result = 0;
+
+	if (node->leftChild != nullptr)
+	{
+		result += 1 + getChildCountRecursive(node->leftChild);
+	}
+	if (node->rightChild != nullptr)
+	{
+		result += 1 + getChildCountRecursive(node->rightChild);
+	}
+	return result;
+}
+
+bool hasChild(Node* node)
+{
+	if (node == nullptr)
+	{
+		return false;
+	}
+	return node->leftChild != nullptr || node->rightChild != nullptr;
+}
+
+bool isRightChild(Node* node)
+{
+	if(node == nullptr)
+	return false;
+
+	if (node->parent != nullptr)
+	{
+		return node->parent->rightChild == node;
+	}
+	return false;
+}
+
+int getLeftChildCount(Node* node)
+{
+	if (node == nullptr)
+	{
+		return 0;
+	}
+	int result = 0;
+	if (node->leftChild != nullptr)
+	{
+		result++;
+	}
+	return result + getLeftChildCount(node->leftChild);
+}
+
+int getRightChildCount(Node* node)
+{
+	if (node == nullptr)
+	{
+		return 0;
+	}
+	int result = 0;
+	if (node->rightChild != nullptr)
+	{
+		result++;
+	}
+	return result + getRightChildCount(node->rightChild);
 }
