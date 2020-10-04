@@ -11,9 +11,13 @@
 void drawTree(BinaryTree* theTree);
 
 /*used to draw the binary tree, draws the provided node and its children.
-  left bool and depth int are used to determine the on screen position of
-  the node.*/
-void drawNodesRecursive(float parentX, float parentY, Node* root, bool isStart);
+  pos X and Y are used to determine where to put the node and
+  thus their children. bool isStart is used to keep the root node in center of screen.*/
+void drawNodesRecursive(float posX, float posY, Node* root, bool isStart);
+
+/*used to draw the lines between nodes in the binary tree. Draws the lines between the
+  provided nodes and its children. */
+void drawNodeLinesRecursive(float posX, float posY, Node* root, bool isStart);
 
 /*toggles the provided boolean if button is true*/
 void toggleBooleanOnButtonPress(bool button, bool& booleanToToggle);
@@ -25,23 +29,13 @@ int main(int argc, char* argv[])
     int screenWidth = 800;
     int screenHeight = 450;
     BinaryTree* theTree = new BinaryTree();
-    theTree->addNode(1);
-
-    theTree->addNode(4);
-    theTree->addNode(3);
-    theTree->addNode(2);
-    theTree->addNode(1);
-
-    theTree->addNode(6);
-    theTree->addNode(7);
-    theTree->addNode(8);
-    theTree->addNode(9);
-    theTree->addNode(12);
-    theTree->addNode(11);
-    theTree->addNode(0);
-    theTree->addNode(-5);
-    theTree->addNode(-10);
-    theTree->addNode(-7);
+    theTree->addNode(10);
+    theTree->addNode(20);
+    theTree->addNode(15);
+    theTree->addNode(18);
+    theTree->addNode(19);
+    theTree->addNode(17);
+    theTree->addNode(16);
     bool buttonAddNodePressed = false;
     bool buttonRemoveNodePressed = false;
     InitWindow(screenWidth, screenHeight, "Fredrick Binary Tree - ints");
@@ -83,6 +77,7 @@ int main(int argc, char* argv[])
 static constexpr float nodeSize = 30;
 static constexpr float childXOffset = 15;//space to offset a child from the center of the parent node, left and right.
 static constexpr float childYOffset = 35;//space to offset a child downwards from the parent node
+static constexpr float halfNodeSize = nodeSize / 2;
 
 void drawTree(BinaryTree* theTree)
 {
@@ -94,7 +89,48 @@ void drawTree(BinaryTree* theTree)
 
     float nodesStartX = 400;
     float nodesStartY = 60;
+    drawNodeLinesRecursive(nodesStartX, nodesStartY, theTree->getRoot(), true);
     drawNodesRecursive(nodesStartX, nodesStartY, theTree->getRoot(), true);
+}
+
+void drawNodeLinesRecursive(float posX, float posY, Node* root, bool isStart)
+{
+    if (root == nullptr)
+    {
+        return;
+    }
+
+    if (!isStart)
+    {
+        if (isRightChild(root) && root->leftChild != nullptr)
+        {
+            posX += getLeftChildCount(root) * childXOffset;
+        }
+        else if (!isRightChild(root) && root->rightChild != nullptr)
+        {
+            posX -= getRightChildCount(root) * childXOffset;
+        }
+    }
+
+    //calculate position of children nodes and drawing lines
+    float rightChildPosX = posX;
+    float leftChildPosX = posX;
+
+    if (root->rightChild != nullptr)
+    {
+        rightChildPosX += (getLeftChildCount(root->rightChild) + 1 ) * childXOffset + halfNodeSize;
+        DrawLine(posX + halfNodeSize, posY + halfNodeSize, rightChildPosX, posY + childYOffset + halfNodeSize, DARKGREEN);//line to right child
+    }
+
+    if (root->leftChild != nullptr)
+    {
+        leftChildPosX -= (getRightChildCount(root->leftChild) + 1 ) * childXOffset - halfNodeSize;
+        DrawLine(posX + halfNodeSize, posY + halfNodeSize, leftChildPosX, posY + childYOffset + halfNodeSize, RED);//line to left child
+    }
+
+    //draw childrens lines
+    drawNodeLinesRecursive(posX + childXOffset, posY + childYOffset, root->rightChild, false);
+    drawNodeLinesRecursive(posX - childXOffset, posY + childYOffset, root->leftChild, false);
 }
 
 void drawNodesRecursive(float posX, float posY, Node* root, bool isStart)

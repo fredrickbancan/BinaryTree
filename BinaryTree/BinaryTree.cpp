@@ -313,7 +313,7 @@ int getLeftChildCount(Node* node)
 	{
 		result++;
 	}
-	return result + getLeftChildCount(node->leftChild);
+	return result + getLeftChildCount(node->leftChild) + getLeftChildCount(node->rightChild);
 }
 
 int getRightChildCount(Node* node)
@@ -327,5 +327,5 @@ int getRightChildCount(Node* node)
 	{
 		result++;
 	}
-	return result + getRightChildCount(node->rightChild);
+	return result + getRightChildCount(node->rightChild) + getRightChildCount(node->leftChild);
 }
