@@ -31,12 +31,12 @@ bool BinaryTree::searchAndDeleteLeafRecursive(Node* root, int value)
 	if (value > root->data && root->rightChild != nullptr)
 	{
 
-		return searchForValueRecursive(root->rightChild, value);
+		return searchAndDeleteLeafRecursive(root->rightChild, value);
 
 	}
 	else if (root->leftChild != nullptr)
 	{
-		return searchForValueRecursive(root->leftChild, value);
+		return searchAndDeleteLeafRecursive(root->leftChild, value);
 	}
 	return false;
 }
@@ -44,7 +44,7 @@ bool BinaryTree::searchAndDeleteLeafRecursive(Node* root, int value)
 void BinaryTree::deleteLeaf(Node* leaf)
 {
 	//if this is a leaf at the end of the tree
-	if (leaf->leftChild == nullptr && leaf->rightChild == nullptr)
+	if (!hasChild(leaf))
 	{
 		//if the leaf has a parent, ie, if the leaf is NOT the root
 		if (leaf->parent != nullptr)
@@ -71,7 +71,6 @@ void BinaryTree::deleteLeaf(Node* leaf)
 	}
 
 	//correcting pointers
-
 	
 	Node* nodeToSwap = nullptr;//the node that will be put in the position of the deleted node
 
@@ -89,29 +88,38 @@ void BinaryTree::deleteLeaf(Node* leaf)
 		nodeToSwap = getDeepestSmallestNodeRecursive(leaf->rightChild);
 	}
 
-	//disconnect replacement node from its parent
-	if (nodeToSwap->parent != nullptr)
-	{
-		//correct parent pointers
-		if (nodeToSwap->parent->leftChild == nodeToSwap)
-		{
-			nodeToSwap->parent->leftChild = nullptr;
-		}
-		else
-		{
-			nodeToSwap->parent->rightChild = nullptr;
-		}
-	}
+	
 
 	//copy over data to replace node
 	leaf->data = nodeToSwap->data;
 
 	//finally delete replacement
+	if (hasChild(nodeToSwap))
+	{
+		deleteLeaf(nodeToSwap);
+	}
+	else
+	{
+		//disconnect replacement node from its parent
+		if (nodeToSwap->parent != nullptr)
+		{
+			//correct parent pointers
+			if (nodeToSwap->parent->leftChild == nodeToSwap)
+			{
+				nodeToSwap->parent->leftChild = nullptr;
+			}
+			else
+			{
+				nodeToSwap->parent->rightChild = nullptr;
+			}
+		}
+
 	delete nodeToSwap;
 	count--;
 	if (count < 1)
 	{
 		isEmpty = true;
+	}
 	}
 }
 
